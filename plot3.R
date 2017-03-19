@@ -1,0 +1,12 @@
+raw <- read.table("household_power_consumption.txt", header = TRUE, sep = ";", 
+                  na.strings = "?", colClasses = c(rep("character",2), rep("numeric",7)))
+usedata <- subset(raw, raw$Date == "1/2/2007" | raw$Date == "2/2/2007")
+dtchr <- paste(usedata$Date, usedata$Time)
+t <- strptime(dtchr, format = "%d/%m/%Y %H:%M:%S")
+plot(t, usedata$Sub_metering_1, type = "n", xlab = "", ylab = "Energy sub metering")
+lines(t, usedata$Sub_metering_1)
+lines(t, usedata$Sub_metering_2, col = "red")
+lines(t, usedata$Sub_metering_3, col = "blue")
+legend("topright", legend = names(usedata[7:9]), col = c("black","red", "blue"), lwd = 1, cex = 0.75)
+dev.copy(png, "plot3.png")
+dev.off()
